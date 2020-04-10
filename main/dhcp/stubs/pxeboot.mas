@@ -44,5 +44,5 @@
                     # default to EFI 64 bit
                     filename   "<% $options{filename} %>";
                 }  
-        }
+            }
 % }

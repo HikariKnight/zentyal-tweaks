@@ -1,0 +1,48 @@
+<%doc>
+   This template generates a better tftp filenames based on architecture
+   for PXE booting.
+   Place this file in /usr/share/zentyal/stubs/dhcp
+   Include it by adding
+   <& pxeboot.mas, options => \%options &>
+
+   into the "if ($options{filename}) {" section of subnet.mas and comment out the 
+   filename    "<% $options{filename} %>"; line
+</%doc>
+<%args>
+  %options
+</%args>
+% if ($options{filename}) {
+            # Detect if UEFI/BIOS and use the right boot image
+            class "pxeclient" {
+                match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+
+                if substring (option vendor-class-identifier, 15, 5) = "00000" {
+                    # BIOS client 
+                    filename "undionly.kpxe";
+                }
+                elsif substring (option vendor-class-identifier, 15, 5) = "00002" {
+                    # EFI client 32 bit Type1
+                    filename   "i386-efi/ipxe.efi";
+                }
+                elsif substring (option vendor-class-identifier, 15, 5) = "00006" {
+                    # EFI client 32 bit Type2
+                    filename   "i386-efi/ipxe.efi";
+                }
+                elsif substring (option vendor-class-identifier, 15, 5) = "00007" {
+                    # EFI client 64 bit Type1
+                    filename   "<% $options{filename} %>";
+                }
+                elsif substring (option vendor-class-identifier, 15, 5) = "00008" {
+                    # EFI client 64 bit Type2
+                    filename   "<% $options{filename} %>";
+                }
+                elsif substring (option vendor-class-identifier, 15, 5) = "00009" {
+                    # EFI client 64 bit Type3
+                    filename   "<% $options{filename} %>";
+                }
+                else {
+                    # default to EFI 64 bit
+                    filename   "<% $options{filename} %>";
+                }  
+        }
+% }

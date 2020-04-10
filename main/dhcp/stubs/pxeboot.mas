@@ -22,11 +22,11 @@
                 }
                 elsif substring (option vendor-class-identifier, 15, 5) = "00002" {
                     # EFI client 32 bit Type1
-                    filename   "i386-efi/ipxe.efi";
+                    filename   "i386-efi/<% $options{filename} %>";
                 }
                 elsif substring (option vendor-class-identifier, 15, 5) = "00006" {
                     # EFI client 32 bit Type2
-                    filename   "i386-efi/ipxe.efi";
+                    filename   "i386-efi/<% $options{filename} %>";
                 }
                 elsif substring (option vendor-class-identifier, 15, 5) = "00007" {
                     # EFI client 64 bit Type1
